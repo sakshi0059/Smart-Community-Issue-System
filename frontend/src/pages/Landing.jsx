@@ -237,7 +237,7 @@ export default function Landing() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:auto-rows-[200px]">
             {issueCards.map((issue, index) => {
               const sizeClass = issue.size === 'large' 
                 ? 'md:col-span-2 md:row-span-2' 
