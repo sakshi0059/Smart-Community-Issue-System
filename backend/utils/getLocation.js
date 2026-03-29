@@ -17,6 +17,9 @@ module.exports = getLocation;
 
 async function getLocation(lat, lon) {
   const apiKey = process.env.OPENCAGE_API_KEY;
+
+  console.log("👉 OpenCage KEY:", apiKey); // ADD THIS
+
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}`;
 
   try {

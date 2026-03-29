@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Check if Appwrite is configured
 // if (!process.env.APPWRITE_PROJECT_ID) {
@@ -20,7 +20,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-com
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 app.get('/', (req, res) => {
   res.send('Welcome to Jagruk');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+/*import React, { useEffect, useState } from 'react'
 import uploadImage from '../utils/uploadImage';
 import { useAuth } from '../contexts/AuthContext';
 import { SignedIn, SignedOut, SignInButton } from '../components/AuthComponents';
@@ -169,4 +169,197 @@ const ReportIssue = () => {
     );
 };
 
-export default ReportIssue
+export default ReportIssue*/
+
+import React, { useState } from 'react';
+import uploadImage from '../utils/uploadImage';
+import { useAuth } from '../contexts/AuthContext';
+import { SignedIn, SignedOut, SignInButton } from '../components/AuthComponents';
+import { createIssue } from '../api/Issues';
+
+const ReportIssue = () => {
+    const [fileName, setFileName] = useState('No file chosen');
+    const [loading, setLoading] = useState(false);
+    const { getToken, user } = useAuth();
+
+    const [file, setFile] = useState(null);
+    const [formData, setFormData] = useState({
+        userMessage: '',
+        coordinates: null,
+        imageUrl: null,
+    });
+
+    // 📸 Handle file selection
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFileName(selectedFile ? selectedFile.name : 'No file chosen');
+        setFile(selectedFile);
+    };
+
+    // 🚀 Submit handler (FULLY STABLE)
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+
+        if (loading) return; // 🚫 prevent multiple clicks
+
+        try {
+            setLoading(true);
+
+            const token = await getToken();
+
+            if (!token) {
+                alert('Please sign in to report an issue');
+                return;
+            }
+
+            if (!file) {
+                alert('Please select an image');
+                return;
+            }
+
+            // 📍 Get location
+            const coordinates = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                        });
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                );
+            });
+
+            console.log('📤 Uploading image...');
+            const imageData = await uploadImage(file, token);
+
+            console.log('🧠 Creating issue...');
+            const issueData = {
+                userMessage: formData.userMessage,
+                coordinates,
+                imageUrl: imageData.url,
+            };
+
+            const userId = user.$id;
+
+            const response = await createIssue(issueData, token, userId);
+
+            // ✅ Smart success message
+            if (response?.title === "AI unavailable") {
+                alert("⚠️ AI busy, but issue reported successfully!");
+            } else {
+                alert("✅ Issue reported successfully!");
+            }
+
+            // 🔄 Reset form
+            setFormData({ userMessage: '', coordinates: null, imageUrl: null });
+            setFile(null);
+            setFileName('No file chosen');
+
+        } catch (error) {
+            console.error("❌ Error reporting issue:", error);
+
+            if (error.response?.status === 429) {
+                alert("⚠️ Server busy. Please try again in a few seconds.");
+            } else {
+                alert("❌ Failed to report issue: " + (error.response?.data?.msg || error.message));
+            }
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="max-w-3xl mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4 text-gray-700">Report Issue</h1>
+
+            <ol className="mb-6 list-decimal pl-6 text-gray-700">
+                <li>Tap <strong>Take Photo</strong> and capture the problem.</li>
+                <li>(Optional) Add description.</li>
+                <li>Tap <strong>Submit Report</strong>.</li>
+            </ol>
+
+            <SignedOut>
+                <div className="text-center py-12">
+                    <p className="mb-4 text-gray-600">Please sign in to report an issue</p>
+                    <SignInButton mode="modal">
+                        <span className="bg-yellowOrange text-white px-6 py-3 rounded-full hover:bg-amber-500 cursor-pointer">
+                            Sign In
+                        </span>
+                    </SignInButton>
+                </div>
+            </SignedOut>
+
+            <SignedIn>
+                <form onSubmit={handleFormSubmit}>
+                    {/* 📸 Image Upload */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Take Photo
+                        </label>
+
+                        <input
+                            accept="image/*"
+                            type="file"
+                            capture="environment"
+                            id="camera-upload"
+                            hidden
+                            onChange={handleFileChange}
+                        />
+
+                        <label
+                            htmlFor="camera-upload"
+                            className="cursor-pointer bg-gray-100 px-4 py-2 rounded-md border hover:bg-gray-200"
+                        >
+                            Take Photo
+                        </label>
+
+                        <p className="text-gray-600 text-sm mt-1">{fileName}</p>
+
+                        {file && (
+                            <img
+                                src={URL.createObjectURL(file)}
+                                alt="Preview"
+                                className="mt-3 max-h-48 rounded-md border"
+                            />
+                        )}
+                    </div>
+
+                    {/* 📝 Message */}
+                    <textarea
+                        placeholder="Describe the issue..."
+                        value={formData.userMessage}
+                        onChange={(e) =>
+                            setFormData({ ...formData, userMessage: e.target.value })
+                        }
+                        className="w-full h-32 p-2 border rounded-md mb-4 resize-none"
+                    />
+
+                    {/* 🚀 Submit Button */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`px-6 py-3 rounded-full text-white transition 
+                        ${loading
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-yellowOrange hover:opacity-80 cursor-pointer"
+                            }`}
+                    >
+                        {loading ? 'Reporting...' : 'Submit Report'}
+                    </button>
+
+                    {loading && (
+                        <p className="text-gray-600 mt-2">
+                            Please wait, processing your report...
+                        </p>
+                    )}
+                </form>
+            </SignedIn>
+        </div>
+    );
+};
+
+export default ReportIssue;
