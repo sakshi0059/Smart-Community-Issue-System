@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /*import React, { useEffect, useState } from 'react'
+=======
+import React, { useEffect, useState } from 'react'
+>>>>>>> 8341e849b93b4078d68c375fc068c421c8ac203d
 import uploadImage from '../utils/uploadImage';
 import { useAuth } from '../contexts/AuthContext';
 import { SignedIn, SignedOut, SignInButton } from '../components/AuthComponents';
@@ -169,6 +173,7 @@ const ReportIssue = () => {
     );
 };
 
+<<<<<<< HEAD
 export default ReportIssue*/
 
 import React, { useState } from 'react';
@@ -363,3 +368,6 @@ const ReportIssue = () => {
 };
 
 export default ReportIssue;
+=======
+export default ReportIssue
+>>>>>>> 8341e849b93b4078d68c375fc068c421c8ac203d

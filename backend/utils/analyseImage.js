@@ -1,6 +1,7 @@
 /*
 This function analyzes an image and classifies it into a civic category. It uses the OpenRouter API to process the image and return a structured JSON response containing the category and a concise title.
 */
+<<<<<<< HEAD
 /*const fs = require('fs');
 console.log("__dirname =", __dirname);
 console.log("Looking for .env at:", __dirname + '/../.env');
@@ -9,6 +10,8 @@ console.log("API Key Loaded:", process.env.OPENROUTER_API_KEY);
 require('dotenv').config({ path: __dirname + '/../.env' });
 console.log("API Key Loaded:", process.env.OPENROUTER_API_KEY);
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+=======
+>>>>>>> 8341e849b93b4078d68c375fc068c421c8ac203d
 async function analyzeImage(imageUrl) {
     const prompt = `
 Analyze the uploaded image and classify it into one of the following fixed civic categories:
@@ -36,7 +39,11 @@ Only respond with the raw JSON object. Do not use Markdown formatting or triple 
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+<<<<<<< HEAD
             "model": "mistralai/mistral-7b-instruct:free",
+=======
+            "model": "mistralai/mistral-small-3.2-24b-instruct:free",
+>>>>>>> 8341e849b93b4078d68c375fc068c421c8ac203d
             "messages": [
                 {
                     "role": "user",
@@ -88,6 +95,7 @@ Only respond with the raw JSON object. Do not use Markdown formatting or triple 
 //     }
 // })();
 module.exports = analyzeImage;
+<<<<<<< HEAD
 
 (async () => {
     const result = await analyzeImage("https://res.cloudinary.com/da3wjnlzg/image/upload/v1759671098/JagrukImageContainer/ihrc7ybnmwdbol8kl4dz.jpg");
@@ -263,3 +271,5 @@ async function analyzeImage(imageUrl, useBase64 = true) {
 }
 
 module.exports = analyzeImage;
+=======
+>>>>>>> 8341e849b93b4078d68c375fc068c421c8ac203d
