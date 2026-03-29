@@ -35,5 +35,3 @@ app.use('/api', require('./routes/officer'));
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
-const cors = require("cors");
-app.use(cors());

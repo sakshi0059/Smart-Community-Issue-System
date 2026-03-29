@@ -6,9 +6,9 @@ const fs = require('fs');
 const { requireAuth } = require('../middleware/auth');
 
 cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Middleware to handle file uploads
@@ -36,15 +36,19 @@ router.post('/upload', (req, res) => {
         }
 
         cloudinary.v2.uploader.upload(file.tempFilePath, { folder: 'JagrukImageContainer' }, async (err, result) => {
-            if (err) throw err;
+    if (err) {
+        console.error("Cloudinary Error:", err); // 👈 ADD
+        return res.status(500).json({ msg: "Cloudinary upload failed" });
+    }
 
             removeTmp(file.tempFilePath);
 
             res.json({ public_id: result.public_id, url: result.secure_url });
         });
     } catch (err) {
-        res.status(500).json({ msg: err.message });
-    }
+    console.error("UPLOAD ERROR:", err);   // 👈 ADD THIS
+    res.status(500).json({ msg: err.message });
+}
 });
 
 router.post('/destroy', requireAuth(), (req, res) => {

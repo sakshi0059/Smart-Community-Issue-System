@@ -1,7 +1,6 @@
 /*
 This function analyzes an image and classifies it into a civic category. It uses the OpenRouter API to process the image and return a structured JSON response containing the category and a concise title.
 */
-
 async function analyzeImage(imageUrl) {
     const prompt = `
 Analyze the uploaded image and classify it into one of the following fixed civic categories:
@@ -51,7 +50,14 @@ Only respond with the raw JSON object. Do not use Markdown formatting or triple 
     });
 
     const res = await response.json();
-    const message = res.choices[0].message.content;
+    console.log("FULL AI RESPONSE:", res);
+    
+    const message = res?.choices?.[0]?.message?.content;
+
+    if (!message) {
+    console.error("Invalid AI response:", res);
+    return { category: "Other", title: "Unknown Issue" };
+    }
 
     try {
         const result = JSON.parse(message);

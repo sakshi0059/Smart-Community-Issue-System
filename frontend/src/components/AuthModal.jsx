@@ -32,7 +32,7 @@ const AuthModal = ({ isOpen, onClose, mode = 'login' }) => {
                     setError(result.error);
                 }
             }
-        } catch (err) {
+        } catch {
             setError('An unexpected error occurred');
         } finally {
             setLoading(false);

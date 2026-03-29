@@ -29,7 +29,16 @@ const createIssue = async (req, res) => {
         }
         
         // Analyze image to get category and title via AI
-        const analysis = await analyzeImage(imageUrl);
+        let analysis = { category: "Other", title: "Unknown Issue" };
+
+try {
+    const aiResult = await analyzeImage(imageUrl);
+    if (aiResult && aiResult.category) {
+        analysis = aiResult;
+    }
+} catch (err) {
+    console.error("AI analysis failed:", err);
+}
         // Get city and state from coordinates
         const { city, state } = await getLocation(coordinates.latitude, coordinates.longitude);
         console.log('💾 Creating issue in database...');
