@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+ 
 /*import React, { useEffect, useState } from 'react'
 =======
 import React, { useEffect, useState } from 'react'
@@ -368,6 +368,6 @@ const ReportIssue = () => {
 };
 
 export default ReportIssue;
-=======
-export default ReportIssue
->>>>>>> 8341e849b93b4078d68c375fc068c421c8ac203d
+
+
+
