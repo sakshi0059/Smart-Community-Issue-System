@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-com
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:5173", // change after frontend deploy
+  origin: "https://smart-community-issue-system-1.onrender.com", // change after frontend deploy
   credentials: true
 }));
 
