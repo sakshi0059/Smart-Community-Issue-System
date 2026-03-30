@@ -120,9 +120,7 @@ import NotFound from './pages/NotFound'
 const App = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <InnerApp />
-      </BrowserRouter>
+      <InnerApp />
     </AuthProvider>
   )
 }
