@@ -8,9 +8,9 @@ Thanks for your interest in contributing! This guide covers the essentials for c
 
 ```bash
 # Fork on GitHub, then clone
-git clone https://github.com/YOUR_USERNAME/Smart-Community-Issue-Reporting-System.git
-cd Smart-Community-Issue-Reporting-System
-git remote add upstream https://github.com/tilakjain619/Smart-Community-Issue-Reporting-System.git
+git clone https://github.com/YOUR_USERNAME/Smart-Community-Issue-System.git
+cd Smart-Community-Issue-System
+git remote add upstream https://github.com/sakshi0059/Smart-Community-Issue-System.git
 
 # Setup (see README for detailed instructions)
 cd backend && npm install && cp .env.example .env
