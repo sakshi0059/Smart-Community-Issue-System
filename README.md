@@ -37,8 +37,8 @@ Jagruk is a web application that allows citizens to report local issues with GPS
 
 ```bash
 # Clone and setup backend
-git clone https://github.com/tilakjain619/Smart-Community-Issue-Reporting-System.git
-cd Smart-Community-Issue-Reporting-System/backend
+git clone https://github.com/sakshi0059/Smart-Community-Issue-System.git
+cd Smart-Community-Issue-System/backend
 npm install
 cp .env.example .env  # Configure your API keys
 npm run dev
